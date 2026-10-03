@@ -11,7 +11,7 @@ This repository contains the **FastAPI backend**.
 ## Project Structure
 
 ```
-easeway-backend/
+.
 ├── app/
 │   ├── main.py          # FastAPI app entry point
 │   ├── core/            # Config and settings
