@@ -26,6 +26,15 @@ async def get_estimated_duration(origin: str, destination: str) -> dict:
     except httpx.RequestError:
         raise MapsError("Could not reach Google Maps. Try again later.")
 
+    if response.status_code == 400:
+        raise MapsError("Invalid origin or destination.")
+    if response.status_code in (401, 403):
+        raise MapsError("Invalid or missing Google Maps API key.")
+    if response.status_code == 429:
+        raise MapsError("Google Maps API rate limit exceeded. Try again later.")
+    if response.status_code != 200:
+        raise MapsError(f"Google Maps request failed with status code {response.status_code}.")
+
     routes = response.json().get("routes")
     if not routes:
         raise MapsError("No route found between these locations.")
